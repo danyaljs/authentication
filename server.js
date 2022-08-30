@@ -2,6 +2,7 @@ const express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
     port = process.env.PORT || 3000,
+    User = require('./models/user'),
     mongoUrl = process.env.MONGO_URL || 'mongodb://127.0.0.1/authenticationDB',
     helmet = require('helmet'),
     http = require('http'),
@@ -18,7 +19,7 @@ mongoose.connect(mongoUrl, mongooseOptions).then(() => {
     console.log(error)
 });
 
-app.use(helmet);
+app.use(helmet());
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
