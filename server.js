@@ -6,6 +6,7 @@ const express = require('express'),
     mongoUrl = process.env.MONGO_URL,
     helmet = require('helmet'),
     http = require('http'),
+    jwt = require('jsonwebtoken'),
     cors = require('cors');
 
 const mongoose = require('mongoose');
@@ -23,6 +24,20 @@ app.use(helmet());
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use((req, res, next)  =>{
+
+    if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+
+        jwt.verify(req.headers.authorization.split(' ')[1]   , process.env.JWT_SECRET_CODE, function(err, decode) {
+            if (err) req.user = undefined;
+            else req.user = decode;
+            next();
+        });
+    } else {
+        req.user = undefined;
+        next();
+    }
+});
 
 const routes = require('./routes/user');
 routes(app);
