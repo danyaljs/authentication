@@ -33,3 +33,19 @@ exports.login = (req, res) => {
         throw error;
     })
 }
+
+exports.loginRequired = (req, res, next) => {
+    if (req.user)
+        return next();
+
+    return res.status(401).json({message: 'login required!'})
+}
+
+exports.getProfile = (req, res) => {
+    User.findOne({_id: req.user._id}).then(user => {
+        user.password = undefined;
+        res.json(user);
+    }).catch(error => {
+        throw error;
+    })
+}
