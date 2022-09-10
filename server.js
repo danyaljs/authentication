@@ -1,9 +1,9 @@
 const express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
-    port = process.env.PORT || 3000,
+    port = process.env.API_PORT,
     User = require('./models/user'),
-    mongoUrl = process.env.MONGO_URL || 'mongodb://127.0.0.1/authenticationDB',
+    mongoUrl = process.env.MONGO_URL,
     helmet = require('helmet'),
     http = require('http'),
     cors = require('cors');
